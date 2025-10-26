@@ -1,0 +1,1723 @@
+okavela views file lo yedanna modulenotfound ani ooste manam tappuga run chesinattu
+so aada python manage.py runserver kottu appudu crct ga ostundi
+
+pypi.org
+search for any package
+Azure AI Image Analysis
+go through documentation and there will be some content and this well help for develoment
+
+
+views.py
+
+from django.shortcuts import render
+from django.http import HttpResponse
+# Create your views here.
+def fun1(Request):
+    return HttpResponse("FIRST EVER DJANGO PROJECT")
+def fun2(Request):
+    return HttpResponse("second EVER DJANGO PROJECT")
+def fun3(Request):
+    return HttpResponse("third EVER DJANGO PROJECT")
+
+   
+my_app url
+
+from django.urls import path
+from my_app import views
+
+urlpatterns = [
+    path('',views.fun1,name="NICK"),
+    path('second/',views.fun2,name="NICK"),
+    path('third/',views.fun3,name="NICK"),
+]
+
+urls.py(BASE DIRECTORY)
+eeda new module(my_app) url's ni include cheyalla 
+so from django.urls import path deeniki
+,include add chey
+from django.urls import path,include
+
+
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('hii/',include('my_app.urls')),
+]
+
+in settings.py add newly created module(my_app)
+INSTALLED_APPS=[add newly created module]
+like thiss
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'my_app',  #THIS IS ADDED
+]
+
+IF you want to include any files after creating folder 
+in settings.py in TEMPLATES 
+we have an option DIRS: []
+here add that file path using [BASEDIR/'newly created file']
+basedir annappudu manam undead dantlo aa path settings.py lo untadi manam oka folder ni create chesindi kuda bd lo so BASE_DIR/newly created folder name in quotes
+in views.py 
+
+to include that html file
+def fun1(Request):
+    return render(Request,"index.html")
+
+if to access fun2 the url must be
+http://127.0.0.1:8000/hii/
+http://127.0.0.1:8000/B_D/second bcoz path('second/',views.fun2,name="NICK") second is given so 
+
+to access third based same as it is but in path("HERE mention that")
+
+
+THE ABOVE IS FIRST STAGE
+
+{% %}  --> this is template so here we can call files 
+It is used to denote a control flow statement such as conditionals or loops. Here's how it's typically used:
+
+{% if condition %}: Used for conditionals.
+{% for item in list %}: Used for looping through a list.
+{% block name %}: Used for defining blocks in templates.
+These statements allow dynamic content generation in templates.
+
+NOW CREATING BUTTONS AND IF ONE BUTTON CLICKED ONE PAGE SHOULD OPEN
+<a href="{% url 'homec' %}" class="btn btn-primary">Home</a>4
+here homec is the nickname of fun1 i.e., calling the home page i.e., calling first function
+and the homec will be in urls
+path('first/',views.fun2,name="firstc"), and in fun1 and homec is the nickname
+
+ante chrome loki poyi praati sari first second ani static ga type cheyakunda button 
+path('first/',views.fun2,name="firstc"),  oka nickname ichinam adendi ante name=firstc
+path chinnadi 'first/' kabatti type cheskochu kani okavela url peddaga untaayi dynamic vi alaantappudu nickname istam name="firstc" ani tarvata daanni call cheskola html file lo
+{% url 'homec' %}  eeda percentages lo specify chestunnam url ni call chey kani aa url yedi ante homec ani nickname ichinam so aa path call aytundi search bar lo 
+
+a href="{% url 'homec' %}" class="btn btn-primary">Home</a>
+
+THE ABOVE IS SECOND STAGE 
+ALLOWED_HOSTS=[eeda mana ip address or 127.0.0.1(i.e., localhost anukunta]
+
+Now here the data entered at backend i.e, at fun1() should return to frontend 
+by using context(giving backend data to frontend),it is dictionary type
+limited python raayagalam html lo adhi dentlo {{ }} it is only for printing okavela conditions loops yevanna unte {% %} deeni madhyalo 
+
+
+now go to views in fun1
+def fun1(Request):
+    data="THIS IS BACKEND TEXT"
+    context={'response':data}
+    return render(Request,"index.html",context)
+
+data lo yedanna text store chey
+ooti cheppina kada backedn nunchi frontend ki data techhukovalla ante dict type maatrame so key response ani petti value ki data ni assign chestam
+
+actual ga fun1 ante home button daanni click chesinappudu index.hmtl open aytadi manaki output kanipiidu output kanipiiyali ante template tag lo key ni iyyali 
+{{response}} iyyalla idhi tappa dictionary name ichina data ani ichhina raadu output
+
+just mamuuluga display aytundi 
+daanni design cheskochhu adhi yekkada index.html lo
+<h3>{{response}}</h3>
+<center><h3>{{response}}</h3></center>
+
+def fun1(Request):
+    data="THIS IS BACKEND TEXT"
+    data1="THIS IS FIRST VARIABLE"
+    data2="THIS IS SECOND VARIABLE"
+    context={'response':data,
+             'first part':data1,
+             'second part':data2}
+    return render(Request,"index.html",context)
+
+for like this how to access data,data1,data2
+<h3>{{response}}</h3>
+<h3>{{firstpart}}</h3>
+<h3>{{secondpart}}</h3>
+TYPE THIS IN HTML ALSO
+
+inkoka laaga kuda access cheskochu 
+  context={'firstpart':'THIS IS FIRST VARIABLE',
+           'secondpart':'THIS IS SECOND VARIABLE'}
+firstpart:data1
+secondpart-data2 ani iste error ostundi endukante aa variables levu kada so direct text iyyalsinde
+
+
+now nested dictionaries
+def fun1(request):
+    # data="THIS IS BACKEND TEXT"
+    # data1="THIS IS FIRST VARIABLE"
+    # data2="THIS IS SECOND VARIABLE"
+    # context={'response':data,
+    #          'firstpart':data1,
+    #          'secondpart':data2,}
+    # context={'firstpart':'THIS IS FIRST VARIABLE','secondpart':'THIS IS SECOND VARIABLE'}
+    details={'mobilename':'OnePlus',
+             'price':24000,
+             'RAM':'8GB'}
+    response={'context':details}
+    return render(request,"index.html",response)
+after running this the output is wont visible bcoz in html file
+  <!-- <center> <h3>{{response}}</h3></center>
+   <center><h3>{{firstpart}}</h3></center>
+   <center><h3>{{secondpart}}</h3></center> --> 
+it will be there and the three is not used 
+so we want to change 
+to {{context}} bcoz it is only the jey for our created nested dictionary 
+now the whole dictionary will be printed 
+{'mobilename': 'OnePlus', 'price': 24000, 'RAM': '8GB'}
+
+to access specific item we can use .(dot) opeator
+context.mobilename
+context.price
+context.RAM ante
+
+
+
+now integrating azure-ai services 
+
+so for that create a .py file to import dependencies for to work textanalytics
+from azure.ai.textanalytics import TextAnalyticsClient
+from azure.core.credentials import AzureKeyCredential
+endpoint='"
+key=""
+credential=AzureKeyCredential(key)
+client=TextAnalyticsClient(endpoint=endpoint,credential=credential)
+
+views.py
+
+from my_app.azureai import client
+def fun1(request):
+    comments=["ONEPLUUS HAS BEST BATTERY PERFORMANCE",
+              "VIVO HAS BEST PHOTOGRPAHIC SENSORS",]
+    result=client.analyze_sentiment(documents=comments)
+    return render(request,"index.html",{"SENTIMENT_ANALYSIS":result})
+index.html
+    {% for i in SENTIMENT_ANALYSIS %}
+     {{i.sentiment}}
+    {% endfor %}
+
+    
+
+
+
+
+
+
+
+NOW CONNECTING FRONTEND TO BACKEND i.e., you give data in frontend and it transfers to backend and there we perform sentiment there 
+but first we give data in frontend that data is transmitted to our html file with nickname and we are copying that value through nickname in the form of dictionary and storing with a dict and in going to that relevant html file print that key
+
+
+
+if new html file created then 
+path('pathhere/',views.newlycreatedfunction,name="secondc"),
+pathhere entiki base directory lo new html file ni access cheskuneki like child anuko
+
+newlycreatedfile lo manam code em rasintaam ante frontend llo type chesindedi POST request to access cheskodaaniki daaniki malla aa result ne oka key ki assign chesi oka html file petukoyintam kada aa key ni use print cheyalla template lo appudu kanipistadi
+
+path('second/',views.fun3,name="secondc"),
+secondc ochi nenu nickname ichukuntunna deniki fun3 lo unna html ki 
+so that second/ type cheyagaane 
+
+
+newly createdfile
+first oka path create cheyali aa file ni access cheskodaaniki
+so path('newly created html file',views.(oka function create chesintam),name=" ")
+ikkada name=" " lo mention yeddayite chestamo adhi em chestundi so that ee html file aa function work avtayi by using nickname
+kani aa name=" " lo ichindedi ok 
+kaani adhi redirect kaavali kada so ippudu aa kottaga create chesina html file lo 
+<a href="{% url 'eeda name=" "(lodi pettalla)' %}" ></a>
+eeda name=" "(lodi pettalla) = aa nickname to access chestunattu
+url peddaga ravachu so nickname to accessing 
+
+mari ippudu 3 unnayi nadantlo navigation prati daaaniki undadam kosam 
+aa anchor tag di prati html file lo mention chesta 
+
+index2.html
+    <form method="POST"> {% csrf_token %}
+        <div class="container col-lg-8">
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Example comments for sentiment analysis</label>
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                name="comment"
+              ></textarea>
+              <br>
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div >
+            <p class="text-center">{{ res }}</p>
+            <p class="text-center">{{ resu }}</p>
+            <p class="text-center"> SENTIMENT TYPE: {{ resul }}</p>
+          </div>
+    </form>
+fun3.py in views
+def fun3(request):
+    if request.method=="POST":
+        a=request.POST.get("comment")
+        print(a)
+        result=client.analyze_sentiment(documents=[a])
+        t=result[0].sentiment
+        return render(request,"index2.html",{"res":a,
+                                             "resu":result,
+                                             "resul":t}) 
+    else:
+        return render(request,"index2.html")
+
+
+
+
+
+
+This is connecting frontend and backend data
+Example comments for sentiment analysis
+
+YOU ARE GOOD BUT YOU HAVE ANGER ISSUES YOU ARE BAD YOU HAVE ANGER MANAGEMENT YOU ARE GOOD BUT SOMETIMES BAD
+
+[AnalyzeSentimentResult(id=0, sentiment=negative, warnings=[], statistics=None, confidence_scores=SentimentConfidenceScores(positive=0.16, neutral=0.06, negative=0.78), sentences=[SentenceSentiment(text=YOU ARE GOOD BUT YOU HAVE ANGER ISSUES YOU ARE BAD YOU HAVE ANGER MANAGEMENT YOU ARE GOOD BUT SOMETIMES BAD, sentiment=negative, confidence_scores=SentimentConfidenceScores(positive=0.16, neutral=0.06, negative=0.78), length=109, offset=0, mined_opinions=[])], is_error=False, kind=SentimentAnalysis)]
+
+SENTIMENT TYPE: negative
+
+  itlochindi eeda aa sentences anni line lo print avvalla
+malla sentiment oka line ke ochindi kaani prati sentence print kavalla so for loop use chesi templatesa lo anni sentiments ni print cheyalla 
+
+
+
+
+
+now the data typed at frontend is stored in backend and there we give the sentiment and its analysis as pending now the data typed at frontend is stored to database using a function in views and retrieving the data from the database whose analysis is pending and analyzing the sentiment and replacing the data with the analyzed output to database when a button is clicked and it is done with one view
+
+now install extension .sqlite3
+go to models.py and define a database using classes 
+
+ class Comment(models.Model)
+here models.Model is parent and Comment is inheriting it 
+ippudu table lo two values kosam class lo
+ def __init__(self):
+        self.msg=models.CharField(max_length=100)
+        self.review=models.CharField(max_length=20)
+ deenni urke print cheste object return aytundi 
+
+so 
+def __str__(self):
+        return self.msg
+
+
+now database definition created
+from django.db import models
+
+class Comment(models.Model):
+    msg=models.CharField(max_length=100)
+    review=models.CharField(max_length=20)
+    def __str__(self):
+        return self.msg
+
+now import our model to views 
+from my_app.models import Comment
+
+now here our frontend data is retrieved by using name we have given for the textbox named comment
+
+so text=request.GET.get("comment")
+
+now the data i.e., store in database
+obj=comment(msg=text,review="Pending")
+data ochindi ikkada kaani save cheyali kada so 
+obj,save()
+
+total code for getting data and storing it in db
+obj=comment(msg=text,review="Pending")
+obj,save()
+
+text unnappudumaatrame database lo store avvali 
+ 
+so if text:
+	obj=Comment(msg=text,review"Pending")
+	obj,save()
+   return render(request,"index1.html")
+
+yedoka error oste appudu table ni okasari teesesi 
+makemigrations 
+migrate 
+chey taravta teesesina table ni add chey 
+mari 
+makemigrations
+migrate chey appudu database lo columns ostaayi
+
+
+now the data is stored in database
+to change that pending to azure and returning the sentiment
+we create a new function and new button 
+
+def analyze_review(request):
+    comment=Comment.objects.filter(review="Pending")
+    if comment:
+        for x in comment:
+            t=x.msg
+            res=client.analyze_sentiment(documents=[t])
+            re=res[0].sentiment
+            x.review=re
+            x.save()
+    return render(request,"index1.html")
+now add that in urls(to run above code or view)
+  path('analysis/',views.analyze_review,name="senti_analysis")
+
+button url paste in all files
+    <a href="{%url 'senti_analysis' %}" class="'btn btn-success"> SUCCESS</a>
+
+
+
+
+
+
+
+
+
+NOW INFOSYS LABS 
+
+
+
+
+
+3)now Read Text in Images
+2 Hr 51 Min Remaining
+Disclaimer Click to show or hide
+Tip: As you follow the instructions in this pane, whenever you see a icon, you can use it to copy text from the instruction pane into the virtual machine interface. This is particularly useful to copy code; but bear in mind you may need to modify the pasted code to fix indent levels or formatting before running it!
+
+Log into Windows as Student account with the password Pa55w.rd.
+
+During the lab exercise, use the following credentials to sign into the Azure subscription that is provided for you:
+
+User name: User1-45187723@LODSPRODMCA.onmicrosoft.com
+Password: M+6e!jJ0Da
+Create all Azure resources in the ResourceGroup1 resource group.
+
+Azure resources such as Virtual Machine names, sizes and locations must match what is specified in these steps. Due to the nature of Cloud Slice, deployments are limited to the scope defined in the instructional steps. If the resources provisioned differ from what is outlined in the instructions, a failure notification will be received, advising this was “disallowed by policy.” If you believe you have received this notification in error, please submit a support request for our team to investigate further.
+
+Read Text in Images
+Optical character recognition (OCR) is a subset of computer vision that deals with reading text in images and documents. The Azure AI Vision service provides an API for reading text, which you'll explore in this exercise.
+
+Clone the repository for this course
+If you haven't already done so, you must clone the code repository for this course:
+
+Start Visual Studio Code.
+
+Open the palette (SHIFT+CTRL+P) and run a Git: Clone command to clone the https://github.com/MicrosoftLearning/mslearn-ai-vision repository to a local folder (it doesn't matter which folder).
+
+When the repository has been cloned, open the folder in Visual Studio Code.
+
+Wait while additional files are installed to support the C# code projects in the repo.
+
+Note: If you are prompted to add required assets to build and debug, select Not Now. If you are prompted with the Message Detected an Azure Function Project in folder, you can safely close that message.
+
+Provision an Azure AI Services resource
+If you don't already have one in your subscription, you'll need to provision an Azure AI Services resource.
+
+Open the Azure portal at https://portal.azure.com, and sign in using the Microsoft account associated with your Azure subscription.
+
+In the top search bar, search for Azure AI services, select Azure AI Services, and create an Azure AI services multi-service account resource with the following settings:
+
+Subscription: Your Azure subscription
+Resource group: Choose or create a resource group (if you are using a restricted subscription, you may not have permission to create a new resource group - use the one provided)
+Region: Choose from East US, France Central, Korea Central, North Europe, Southeast Asia, West Europe, West US, or East Asia*
+Name: Enter a unique name
+Pricing tier: Standard S0
+*Azure AI Vision 4.0 features are currently only available in these regions.
+
+Select the required checkboxes and create the resource.
+
+Wait for deployment to complete, and then view the deployment details.
+
+When the resource has been deployed, go to it and view its Keys and Endpoint page. You'll need the endpoint and one of the keys from this page in the next procedure.
+
+Prepare to use the Azure AI Vision SDK
+In this exercise, you'll complete a partially implemented client application that uses the Azure AI Vision SDK to read text.
+
+Note: You can choose to use the SDK for either C# or Python. In the following steps, perform the actions appropriate for your preferred language.
+
+In Visual Studio Code, in the Explorer pane, browse to the Labfiles\05-ocr folder and expand the C-Sharp or Python folder depending on your language preference.
+
+Right-click the read-text folder and open an integrated terminal. Then install the Azure AI Vision SDK package by running the appropriate command for your language preference:
+
+C#
+
+dotnet add package Azure.AI.Vision.ImageAnalysis -v 1.0.0-beta.3
+Note: If you are prompted to install dev kit extensions, you can safely close the message.
+
+Python
+
+pip install azure-ai-vision-imageanalysis==1.0.0b3
+View the contents of the read-text folder, and note that it contains a file for configuration settings:
+
+C#: appsettings.json
+Python: .env
+Open the configuration file and update the configuration values it contains to reflect the endpoint and an authentication key for your Azure AI services resource. Save your changes.
+
+Use the Azure AI Vision SDK to read text from an image
+One of the features of the Azure AI Vision SDK is to read text from an image. In this exercise, you'll complete a partially implemented client application that uses the Azure AI Vision SDK to read text from an image.
+
+The read-text folder contains a code file for the client application:
+
+C#: Program.cs
+Python: read-text.py
+Open the code file and at the top, under the existing namespace references, find the comment Import namespaces. Then, under this comment, add the following language-specific code to import the namespaces you'll need to use the Azure AI Vision SDK:
+
+C#
+
+C#
+// Import namespaces
+using Azure.AI.Vision.ImageAnalysis;
+Python
+
+Python
+# import namespaces
+from azure.ai.vision.imageanalysis import ImageAnalysisClient
+from azure.ai.vision.imageanalysis.models import VisualFeatures
+from azure.core.credentials import AzureKeyCredential
+In the code file for your client application, in the Main function, the code to load the configuration settings has been provided. Then find the comment Authenticate Azure AI Vision client. Then, under this comment, add the following language-specific code to create and authenticate an Azure AI Vision client object:
+
+C#
+
+C#
+// Authenticate Azure AI Vision client
+ImageAnalysisClient client = new ImageAnalysisClient(
+    new Uri(aiSvcEndpoint),
+    new AzureKeyCredential(aiSvcKey));
+Python
+
+Python
+# Authenticate Azure AI Vision client
+cv_client = ImageAnalysisClient(
+    endpoint=ai_endpoint,
+    credential=AzureKeyCredential(ai_key)
+)
+In the Main function, under the code you just added, note that the code specifies the path to an image file and then passes the image path to the GetTextRead function. This function isn't yet fully implemented.
+
+Let's add some code to the body of the GetTextRead function. Find the comment Use Analyze image function to read text in image. Then, under this comment, add the following language-specific code, noting that the visual features are specified when calling the Analyze function:
+
+C#
+
+C#
+// Use Analyze image function to read text in image
+ImageAnalysisResult result = client.Analyze(
+BinaryData.FromStream(stream),
+// Specify the features to be retrieved
+VisualFeatures.Read);
+stream.Close();
+// Display analysis results
+if (result.Read != null)
+{
+Console.WriteLine($"Text:");
+// Prepare image for drawing
+System.Drawing.Image image = System.Drawing.Image.FromFile(imageFile);
+Graphics graphics = Graphics.FromImage(image);
+Pen pen = new Pen(Color.Cyan, 3);
+foreach (var line in result.Read.Blocks.SelectMany(block => block.Lines))
+{
+// Return the text detected in the image
+}
+ // Save image
+String output_file = "text.jpg";
+image.Save(output_file);
+Console.WriteLine("\nResults saved in " + output_file + "\n");   
+}
+Python
+
+Python
+# Use Analyze image function to read text in image
+result = cv_client.analyze(
+    image_data=image_data,
+    visual_features=[VisualFeatures.READ]
+)
+
+# Display the image and overlay it with the extracted text
+if result.read is not None:
+    print("\nText:")
+# Prepare image for drawing
+image = Image.open(image_file)
+fig = plt.figure(figsize=(image.width/100, image.height/100))
+plt.axis('off')
+draw = ImageDraw.Draw(image)
+color = 'cyan'
+
+for line in result.read.blocks[0].lines:
+    # Return the text detected in the image
+
+
+# Save image
+plt.imshow(image)
+plt.tight_layout(pad=0)
+outputfile = 'text.jpg'
+fig.savefig(outputfile)
+print('\n  Results saved in', outputfile)
+In the code you just added in the GetTextRead function, and under the Return the text detected in the image comment, add the following code (this code prints the image text to the console and generates the image text.jpg which highlights the image's text):
+
+C#
+
+C#
+// Return the text detected in the image
+Console.WriteLine($"   '{line.Text}'");
+
+// Draw bounding box around line
+var drawLinePolygon = true;
+
+// Return the position bounding box around each line
+
+
+
+// Return each word detected in the image and the position bounding box around each word with the confidence level of each word
+
+
+
+// Draw line bounding polygon
+if (drawLinePolygon)
+{
+    var r = line.BoundingPolygon;
+Point[] polygonPoints = {
+    new Point(r[0].X, r[0].Y),
+    new Point(r[1].X, r[1].Y),
+    new Point(r[2].X, r[2].Y),
+    new Point(r[3].X, r[3].Y)
+};
+
+graphics.DrawPolygon(pen, polygonPoints);
+}
+Python
+
+Python
+# Return the text detected in the image
+print(f"  {line.text}")    
+
+drawLinePolygon = True
+
+r = line.bounding_polygon
+bounding_polygon = ((r[0].x, r[0].y),(r[1].x, r[1].y),(r[2].x, r[2].y),(r[3].x, r[3].y))
+
+# Return the position bounding box around each line
+
+
+# Return each word detected in the image and the position bounding box around each word with the confidence level of each word
+
+
+# Draw line bounding polygon
+if drawLinePolygon:
+    draw.polygon(bounding_polygon, outline=color, width=3)
+In the read-text/images folder, select Lincoln.jpg to view the file that your code processes.
+
+In the code file for your application, in the Main function, examine the code that runs if the user selects menu option 1. This code calls the GetTextRead function, passing the path to the Lincoln.jpg image file.
+
+Save your changes and return to the integrated terminal for the read-text folder, and enter the following command to run the program:
+
+C#
+
+dotnet run
+Python
+
+python read-text.py
+When prompted, enter 1 and observe the output, which is the text extracted from the image.
+
+In the read-text folder, select the text.jpg image and noticed how there's a polygon around each line of text.
+
+Return to the code file in Visual Studio Code, and find the comment Return the position bounding box around each line. Then, under this comment, add the following code:
+
+C#
+
+C#
+// Return the position bounding box around each line
+Console.WriteLine($"   Bounding Polygon: [{string.Join(" ", line.BoundingPolygon)}]");  
+Python
+
+Python
+# Return the position bounding box around each line
+print("   Bounding Polygon: {}".format(bounding_polygon))
+Save your changes and return to the integrated terminal for the read-text folder, and enter the following command to run the program:
+
+C#
+
+dotnet run
+Python
+
+python read-text.py
+When prompted, enter 1 and observe the output, which should be each line of text in the image with their respective position in the image.
+
+Return to the code file in Visual Studio Code, and find the comment Return each word detected in the image and the position bounding box around each word with the confidence level of each word. Then, under this comment, add the following code:
+
+C#
+
+C#
+// Return each word detected in the image and the position bounding box around each word with the confidence level of each word
+foreach (DetectedTextWord word in line.Words)
+{
+    Console.WriteLine($"     Word: '{word.Text}', Confidence {word.Confidence:F4}, Bounding Polygon: [{string.Join(" ", word.BoundingPolygon)}]");
+// Draw word bounding polygon
+drawLinePolygon = false;
+var r = word.BoundingPolygon;
+
+Point[] polygonPoints = {
+    new Point(r[0].X, r[0].Y),
+    new Point(r[1].X, r[1].Y),
+    new Point(r[2].X, r[2].Y),
+    new Point(r[3].X, r[3].Y)
+};
+
+graphics.DrawPolygon(pen, polygonPoints);
+}
+Python
+
+Python
+# Return each word detected in the image and the position bounding box around each word with the confidence level of each word
+for word in line.words:
+    r = word.bounding_polygon
+    bounding_polygon = ((r[0].x, r[0].y),(r[1].x, r[1].y),(r[2].x, r[2].y),(r[3].x, r[3].y))
+    print(f"    Word: '{word.text}', Bounding Polygon: {bounding_polygon}, Confidence: {word.confidence:.4f}")
+# Draw word bounding polygon
+drawLinePolygon = False
+draw.polygon(bounding_polygon, outline=color, width=3)
+Save your changes and return to the integrated terminal for the read-text folder, and enter the following command to run the program:
+
+C#
+
+dotnet run
+Python
+
+python read-text.py
+When prompted, enter 1 and observe the output, which should be each word of text in the image with their respective position in the image. Notice how the confidence level of each word is also returned.
+
+In the read-text folder, select the text.jpg image and noticed how there's a polygon around each word.
+
+Use the Azure AI Vision SDK to read handwritten text from an image
+In the previous exercise, you read well defined text from an image, but sometimes you might also want to read text from handwritten notes or papers. The good news is that the Azure AI Vision SDK can also read handwritten text with the same exact code you used to read well defined text. We'll use the same code from the previous exercise, but this time we'll use a different image.
+
+In the read-text/images folder, select on Note.jpg to view the file that your code processes.
+
+In the code file for your application, in the Main function, examine the code that runs if the user selects menu option 2. This code calls the GetTextRead function, passing the path to the Note.jpg image file.
+
+From the integrated terminal for the read-text folder, enter the following command to run the program:
+
+C#
+
+dotnet run
+Python
+
+python read-text.py
+When prompted, enter 2 and observe the output, which is the text extracted from the note image.
+
+In the read-text folder, select the text.jpg image and noticed how there's a polygon around each word of the note.
+
+Clean up resources
+If you're not using the Azure resources created in this lab for other training modules, you can delete them to avoid incurring further charges. Here's how:
+
+Open the Azure portal at https://portal.azure.com, and sign in using the Microsoft account associated with your Azure subscription.
+
+In the top search bar, search for Azure AI services multi-service account, and select the Azure AI services multi-service account resource you created in this lab
+
+On the resource page, select Delete and follow the instructions to delete the resource.
+
+More information
+For more information about using the Azure AI Vision service to read text, see the Azure AI Vision documentation.
+
+Congratulations
+You have successfully completed this lab. Click End to mark the lab as Complete.
+
+
+4)Classify images with a Azure AI Vision custom model 
+Classify images with a Azure AI Vision custom model
+2 Hr 15 Min Remaining
+Disclaimer Click to show or hide
+Tip: As you follow the instructions in this pane, whenever you see a icon, you can use it to copy text from the instruction pane into the virtual machine interface. This is particularly useful to copy code; but bear in mind you may need to modify the pasted code to fix indent levels or formatting before running it!
+
+Log into Windows as Student account with the password Pa55w.rd.
+
+During the lab exercise, use the following credentials to sign into the Azure subscription that is provided for you:
+
+User name: User1-45188174@LODSPRODMCA.onmicrosoft.com
+Password: Sr0Je2!!Da
+Create all Azure resources in the ResourceGroup1 resource group.
+
+Azure resources such as Virtual Machine names, sizes and locations must match what is specified in these steps. Due to the nature of Cloud Slice, deployments are limited to the scope defined in the instructional steps. If the resources provisioned differ from what is outlined in the instructions, a failure notification will be received, advising this was “disallowed by policy.” If you believe you have received this notification in error, please submit a support request for our team to investigate further.
+
+Classify images with an Azure AI Vision custom model
+Azure AI Vision enables you to train custom models to classify and detect objects with labels you specify. In this lab, we'll build a custom image classification model to classify images of fruit.
+
+Clone the repository for this course
+If you have not already cloned the Azure AI Vision code repository to the environment where you're working on this lab, follow these steps to do so. Otherwise, open the cloned folder in Visual Studio Code.
+
+Start Visual Studio Code.
+
+Open the palette (SHIFT+CTRL+P) and run a Git: Clone command to clone the https://github.com/MicrosoftLearning/mslearn-ai-vision repository to a local folder (it doesn't matter which folder).
+
+When the repository has been cloned, open the folder in Visual Studio Code.
+
+Wait while additional files are installed to support the C# code projects in the repo.
+
+Note: If you are prompted to add required assets to build and debug, select Not Now. If you are prompted with the Message Detected an Azure Function Project in folder, you can safely close that message.
+
+Provision Azure resources
+If you don't already have one in your subscription, you'll need to provision an Azure AI Services resource.
+
+Open the Azure portal at https://portal.azure.com, and sign in using the Microsoft account associated with your Azure subscription.
+
+In the top search bar, search for Azure AI services, select Azure AI Services, and create an Azure AI services multi-service account resource with the following settings:
+
+Subscription: Your Azure subscription
+Resource group: Choose or create a resource group (if you are using a restricted subscription, you may not have permission to create a new resource group - use the one provided)
+Region: Choose from East US, West Europe, West US 2*
+Name: Enter a unique name
+Pricing tier: Standard S0
+*Azure AI Vision 4.0 custom model tags are currently only available in these regions.
+
+Select the required checkboxes and create the resource.
+
+We also need a storage account to store the training images.
+
+In Azure portal, search for and select Storage accounts, and create a new storage account with the following settings:
+
+Subscription: Your Azure subscription
+Resource Group: Choose the same resource group you created your Azure AI Service resource in
+Storage Account Name: customclassifySUFFIX
+note: replace the SUFFIX token with your initials or another value to ensure the resource name is globally unique.
+Region: Choose the same region you used for your Azure AI Service resource
+Primary service: Azure Blob Storage or Azure Data Lake Storage Gen 2
+Primary workload: Other
+Performance: Standard
+Redundancy: Locally-redundant storage (LRS)
+While your storage account is being created, go to Visual studio code, and expand the Labfiles/02-image-classification folder.
+
+In that folder, select replace.ps1 and review the code. You'll see that it replaces the name of your storage account for the placeholder in a JSON file (the COCO file) we use in a later step. Replace the placeholder in the first line only of the file with the name of your storage account. Save the file.
+
+Right-click on the 02-image-classification folder and open an Integrated Terminal. Run the following command.
+
+powershell
+./replace.ps1
+You can review the COCO file to ensure your storage account name is there. Select training-images/training_labels.json and view the first few entries. In the absolute_url field, you should see something similar to "https://myStorage.blob.core.windows.net/fruit/…. If you don't see the change expected, make sure you updated only the first placeholder in the PowerShell script.
+
+Close both the JSON and PowerShell file, and go back to your browser window.
+
+Your storage account should be complete. Go to your storage account.
+
+Enable public access on the storage account. In the left pane, navigate to Configuration in the Settings group, and enable Allow Blob anonymous access. Select Save
+
+In the left pane, in Data storage, select Containers and create a new container named fruit, and set Anonymous access level to Container (anonymous read access for containers and blobs).
+
+Note: If the Anonymous access level is disabled, refresh the browser page.
+
+Navigate to fruit, select Upload, and upload the images (and the one JSON file) in Labfiles/02-image-classification/training-images to that container.
+
+Create a custom model training project
+Next, you will create a new training project for custom image classification in Vision Studio.
+
+In the web browser, navigate to https://portal.vision.cognitive.azure.com/ and sign in with the Microsoft account where you created your Azure AI resource.
+Select the Customize models with images tile (can be found in the Image analysis tab if it isn't showing in your default view).
+Select the Azure AI Services account you created.
+In your project, select Add new dataset on the top. Configure with the following settings:
+Dataset name: training_images
+Model type: Image classification
+Select Azure blob storage container: Select Select Container
+Subscription: Your Azure subscription
+Storage account: The storage account you created
+Blob container: fruit
+Select the box to "Allow Vision Studio to read and write to your blob storage"
+Select the training_images dataset.
+At this point in project creation, you would usually select Create Azure ML Data Labeling Project and label your images, which generates a COCO file. You are encouraged to try this if you have time, but for the purposes of this lab we've already labeled the images for you and supplied the resulting COCO file.
+
+Select Add COCO file
+In the dropdown, select Import COCO file from a Blob Container
+Since you have already connected your container named fruit, Vision Studio searches that for a COCO file. Select training_labels.json from the dropdown, and add the COCO file.
+Navigate to Custom models on the left, and select Train a new model. Use the following settings:
+Name of model: classifyfruit
+Model type: Image classification
+Choose training dataset: training_images
+Leave the rest as default, and select Train model
+Training can take some time - default budget is up to an hour, however for this small dataset it is usually much quicker than that. Select the Refresh button every couple minutes until the status of the job is Succeeded. Select the model.
+
+Here you can view the performance of the training job. Review the precision and accuracy of the trained model.
+
+Test your custom model
+Your model has been trained and is ready to test.
+
+On the top of the page for your custom model, select Try it out.
+Select the classifyfruit model from the dropdown specifying the model you want to use, and browse to the 02-image-classification\test-images folder.
+Select each image and view the results. Select the JSON tab in the results box to examine the full JSON response.
+Clean up resources
+If you're not using the Azure resources created in this lab for other training modules, you can delete them to avoid incurring further charges.
+
+Open the Azure portal at https://portal.azure.com, and in the top search bar, search for the resources you created in this lab.
+
+On the resource page, select Delete and follow the instructions to delete the resource. Alternatively, you can delete the entire resource group to clean up all resources at the same time.
+
+Congratulations
+You have successfully completed this lab. Click End to mark the lab as Complete.
+
+
+
+2 analyze images with AI vision
+Analyze Images with Azure AI Vision
+2 Hr 59 Min Remaining
+Disclaimer Click to show or hide
+Tip: As you follow the instructions in this pane, whenever you see a icon, you can use it to copy text from the instruction pane into the virtual machine interface. This is particularly useful to copy code; but bear in mind you may need to modify the pasted code to fix indent levels or formatting before running it!
+
+Log into Windows as Student account with the password Pa55w.rd.
+
+During the lab exercise, use the following credentials to sign into the Azure subscription that is provided for you:
+
+User name: User1-45195664@LODSPRODMCA.onmicrosoft.com
+Password: p!DjeGM50*
+Create all Azure resources in the ResourceGroup1 resource group.
+
+Azure resources such as Virtual Machine names, sizes and locations must match what is specified in these steps. Due to the nature of Cloud Slice, deployments are limited to the scope defined in the instructional steps. If the resources provisioned differ from what is outlined in the instructions, a failure notification will be received, advising this was “disallowed by policy.” If you believe you have received this notification in error, please submit a support request for our team to investigate further.
+
+Analyze Images with Azure AI Vision
+Azure AI Vision is an artificial intelligence capability that enables software systems to interpret visual input by analyzing images. In Microsoft Azure, the Vision Azure AI service provides pre-built models for common computer vision tasks, including analysis of images to suggest captions and tags, detection of common objects and people. You can also use the Azure AI Vision service to remove the background or create a foreground matting of images.
+
+Clone the repository for this course
+If you have not already cloned the Azure AI Vision code repository to the environment where you're working on this lab, follow these steps to do so. Otherwise, open the cloned folder in Visual Studio Code.
+
+Start Visual Studio Code.
+
+Open the palette (SHIFT+CTRL+P) and run a Git: Clone command to clone the https://github.com/MicrosoftLearning/mslearn-ai-vision repository to a local folder (it doesn't matter which folder).
+
+When the repository has been cloned, open the folder in Visual Studio Code.
+
+Wait while additional files are installed to support the C# code projects in the repo.
+
+Note: If you are prompted to add required assets to build and debug, select Not Now. If you are prompted with the Message Detected an Azure Function Project in folder, you can safely close that message.
+
+Provision an Azure AI Services resource
+If you don't already have one in your subscription, you'll need to provision an Azure AI Services resource.
+
+Open the Azure portal at https://portal.azure.com, and sign in using the Microsoft account associated with your Azure subscription.
+
+Select Create a resource.
+
+In the search bar, search for Azure AI services, select Azure AI Services, and create an Azure AI services multi-service account resource with the following settings:
+
+Subscription: Your Azure subscription
+Resource group: Choose or create a resource group (if you are using a restricted subscription, you may not have permission to create a new resource group - use the one provided)
+Region: Choose from East US, West US, France Central, Korea Central, North Europe, Southeast Asia, West Europe, or East Asia*
+Name: Enter a unique name
+Pricing tier: Standard S0
+*Azure AI Vision 4.0 full feature sets are currently only available in these regions.
+
+Select the required checkboxes and create the resource.
+
+Wait for deployment to complete, and then view the deployment details.
+
+When the resource has been deployed, go to it and view its Keys and Endpoint page. You will need the endpoint and one of the keys from this page in the next procedure.
+
+Prepare to use the Azure AI Vision SDK
+In this exercise, you'll complete a partially implemented client application that uses the Azure AI Vision SDK to analyze images.
+
+Note: You can choose to use the SDK for either C# or Python. In the steps below, perform the actions appropriate for your preferred language.
+
+In Visual Studio Code, in the Explorer pane, browse to the Labfiles/01-analyze-images folder and expand the C-Sharp or Python folder depending on your language preference.
+
+Right-click the image-analysis folder and open an integrated terminal. Then install the Azure AI Vision SDK package by running the appropriate command for your language preference:
+
+C#
+
+dotnet add package Azure.AI.Vision.ImageAnalysis -v 1.0.0-beta.3
+Note: If you are prompted to install dev kit extensions, you can safely close the message.
+
+Python
+
+pip install azure-ai-vision-imageanalysis==1.0.0b3
+Tip: If you are doing this lab on your own machine, you'll also need to install matplotlib and pillow.
+
+View the contents of the image-analysis folder, and note that it contains a file for configuration settings:
+
+C#: appsettings.json
+Python: .env
+Open the configuration file and update the configuration values it contains to reflect the endpoint and an authentication key for your Azure AI services resource. Save your changes.
+
+Note that the image-analysis folder contains a code file for the client application:
+
+C#: Program.cs
+Python: image-analysis.py
+Open the code file and at the top, under the existing namespace references, find the comment Import namespaces. Then, under this comment, add the following language-specific code to import the namespaces you will need to use the Azure AI Vision SDK:
+
+C#
+
+C#
+// Import namespaces
+using Azure.AI.Vision.ImageAnalysis;
+Python
+
+Python
+# import namespaces
+from azure.ai.vision.imageanalysis import ImageAnalysisClient
+from azure.ai.vision.imageanalysis.models import VisualFeatures
+from azure.core.credentials import AzureKeyCredential
+View the images you will analyze
+In this exercise, you will use the Azure AI Vision service to analyze multiple images.
+
+In Visual Studio Code, expand the image-analysis folder and the images folder it contains.
+Select each of the image files in turn to view them in Visual Studio Code.
+Analyze an image to suggest a caption
+Now you're ready to use the SDK to call the Vision service and analyze an image.
+
+In the code file for your client application (Program.cs or image-analysis.py), in the Main function, note that the code to load the configuration settings has been provided. Then find the comment Authenticate Azure AI Vision client. Then, under this comment, add the following language-specific code to create and authenticate a Azure AI Vision client object:
+C#
+
+C#
+// Authenticate Azure AI Vision client
+ImageAnalysisClient client = new ImageAnalysisClient(
+    new Uri(aiSvcEndpoint),
+    new AzureKeyCredential(aiSvcKey));
+Python
+
+Python
+# Authenticate Azure AI Vision client
+cv_client = ImageAnalysisClient(
+    endpoint=ai_endpoint,
+    credential=AzureKeyCredential(ai_key)
+)
+In the Main function, under the code you just added, note that the code specifies the path to an image file and then passes the image path to two other functions (AnalyzeImage and BackgroundForeground). These functions are not yet fully implemented.
+
+In the AnalyzeImage function, under the comment Get result with specify features to be retrieved, add the following code:
+
+C#
+
+C#
+// Get result with specified features to be retrieved
+ImageAnalysisResult result = client.Analyze(
+    BinaryData.FromStream(stream),
+    VisualFeatures.Caption | 
+    VisualFeatures.DenseCaptions |
+    VisualFeatures.Objects |
+    VisualFeatures.Tags |
+    VisualFeatures.People);
+Python
+
+Python
+# Get result with specified features to be retrieved
+result = cv_client.analyze(
+    image_data=image_data,
+    visual_features=[
+        VisualFeatures.CAPTION,
+        VisualFeatures.DENSE_CAPTIONS,
+        VisualFeatures.TAGS,
+        VisualFeatures.OBJECTS,
+        VisualFeatures.PEOPLE],
+)
+In the AnalyzeImage function, under the comment Display analysis results, add the following code (including the comments indicating where you will add more code later.):
+C#
+
+C#
+// Display analysis results
+// Get image captions
+if (result.Caption.Text != null)
+{
+    Console.WriteLine(" Caption:");
+    Console.WriteLine($"   \"{result.Caption.Text}\", Confidence {result.Caption.Confidence:0.00}\n");
+}
+
+// Get image dense captions
+Console.WriteLine(" Dense Captions:");
+foreach (DenseCaption denseCaption in result.DenseCaptions.Values)
+{
+    Console.WriteLine($"   Caption: '{denseCaption.Text}', Confidence: {denseCaption.Confidence:0.00}");
+}
+
+// Get image tags
+
+
+// Get objects in the image
+
+
+// Get people in the image
+Python
+
+Python
+# Display analysis results
+# Get image captions
+if result.caption is not None:
+    print("\nCaption:")
+    print(" Caption: '{}' (confidence: {:.2f}%)".format(result.caption.text, result.caption.confidence * 100))
+
+# Get image dense captions
+if result.dense_captions is not None:
+    print("\nDense Captions:")
+    for caption in result.dense_captions.list:
+        print(" Caption: '{}' (confidence: {:.2f}%)".format(caption.text, caption.confidence * 100))
+
+# Get image tags
+
+
+# Get objects in the image
+
+
+# Get people in the image
+Save your changes and return to the integrated terminal for the image-analysis folder, and enter the following command to run the program with the argument images/street.jpg:
+C#
+
+dotnet run images/street.jpg
+Python
+
+python image-analysis.py images/street.jpg
+Observe the output, which should include a suggested caption for the street.jpg image.
+Run the program again, this time with the argument images/building.jpg to see the caption that gets generated for the building.jpg image.
+Repeat the previous step to generate a caption for the images/person.jpg file.
+Get suggested tags for an image
+It can sometimes be useful to identify relevant tags that provide clues about the contents of an image.
+
+In the AnalyzeImage function, under the comment Get image tags, add the following code:
+C#
+
+C#
+// Get image tags
+if (result.Tags.Values.Count > 0)
+{
+    Console.WriteLine($"\n Tags:");
+    foreach (DetectedTag tag in result.Tags.Values)
+    {
+        Console.WriteLine($"   '{tag.Name}', Confidence: {tag.Confidence:F2}");
+    }
+}
+Python
+
+Python
+# Get image tags
+if result.tags is not None:
+    print("\nTags:")
+    for tag in result.tags.list:
+        print(" Tag: '{}' (confidence: {:.2f}%)".format(tag.name, tag.confidence * 100))
+Save your changes and run the program once for each of the image files in the images folder, observing that in addition to the image caption, a list of suggested tags is displayed.
+Detect and locate objects in an image
+Object detection is a specific form of computer vision in which individual objects within an image are identified and their location indicated by a bounding box..
+
+In the AnalyzeImage function, under the comment Get objects in the image, add the following code:
+C#
+
+C#
+// Get objects in the image
+if (result.Objects.Values.Count > 0)
+{
+    Console.WriteLine(" Objects:");
+
+    // Prepare image for drawing
+    stream.Close();
+    System.Drawing.Image image = System.Drawing.Image.FromFile(imageFile);
+    Graphics graphics = Graphics.FromImage(image);
+    Pen pen = new Pen(Color.Cyan, 3);
+    Font font = new Font("Arial", 16);
+    SolidBrush brush = new SolidBrush(Color.WhiteSmoke);
+
+    foreach (DetectedObject detectedObject in result.Objects.Values)
+    {
+        Console.WriteLine($"   \"{detectedObject.Tags[0].Name}\"");
+
+        // Draw object bounding box
+        var r = detectedObject.BoundingBox;
+        Rectangle rect = new Rectangle(r.X, r.Y, r.Width, r.Height);
+        graphics.DrawRectangle(pen, rect);
+        graphics.DrawString(detectedObject.Tags[0].Name,font,brush,(float)r.X, (float)r.Y);
+    }
+
+    // Save annotated image
+    String output_file = "objects.jpg";
+    image.Save(output_file);
+    Console.WriteLine("  Results saved in " + output_file + "\n");
+}
+Python
+
+Python
+# Get objects in the image
+if result.objects is not None:
+    print("\nObjects in image:")
+
+    # Prepare image for drawing
+    image = Image.open(image_filename)
+    fig = plt.figure(figsize=(image.width/100, image.height/100))
+    plt.axis('off')
+    draw = ImageDraw.Draw(image)
+    color = 'cyan'
+
+    for detected_object in result.objects.list:
+        # Print object name
+        print(" {} (confidence: {:.2f}%)".format(detected_object.tags[0].name, detected_object.tags[0].confidence * 100))
+
+        # Draw object bounding box
+        r = detected_object.bounding_box
+        bounding_box = ((r.x, r.y), (r.x + r.width, r.y + r.height)) 
+        draw.rectangle(bounding_box, outline=color, width=3)
+        plt.annotate(detected_object.tags[0].name,(r.x, r.y), backgroundcolor=color)
+
+    # Save annotated image
+    plt.imshow(image)
+    plt.tight_layout(pad=0)
+    outputfile = 'objects.jpg'
+    fig.savefig(outputfile)
+    print('  Results saved in', outputfile)
+Save your changes and run the program once for each of the image files in the images folder, observing any objects that are detected. After each run, view the objects.jpg file that is generated in the same folder as your code file to see the annotated objects.
+Detect and locate people in an image
+People detection is a specific form of computer vision in which individual people within an image are identified and their location indicated by a bounding box.
+
+In the AnalyzeImage function, under the comment Get people in the image, add the following code:
+C#
+
+C#
+// Get people in the image
+if (result.People.Values.Count > 0)
+{
+    Console.WriteLine($" People:");
+
+    // Prepare image for drawing
+    System.Drawing.Image image = System.Drawing.Image.FromFile(imageFile);
+    Graphics graphics = Graphics.FromImage(image);
+    Pen pen = new Pen(Color.Cyan, 3);
+    Font font = new Font("Arial", 16);
+    SolidBrush brush = new SolidBrush(Color.WhiteSmoke);
+
+    foreach (DetectedPerson person in result.People.Values)
+    {
+        // Draw object bounding box
+        var r = person.BoundingBox;
+        Rectangle rect = new Rectangle(r.X, r.Y, r.Width, r.Height);
+        graphics.DrawRectangle(pen, rect);
+
+        // Return the confidence of the person detected
+        //Console.WriteLine($"   Bounding box {person.BoundingBox.ToString()}, Confidence: {person.Confidence:F2}");
+    }
+
+    // Save annotated image
+    String output_file = "persons.jpg";
+    image.Save(output_file);
+    Console.WriteLine("  Results saved in " + output_file + "\n");
+}
+Python
+
+Python
+# Get people in the image
+if result.people is not None:
+    print("\nPeople in image:")
+
+    # Prepare image for drawing
+    image = Image.open(image_filename)
+    fig = plt.figure(figsize=(image.width/100, image.height/100))
+    plt.axis('off')
+    draw = ImageDraw.Draw(image)
+    color = 'cyan'
+
+    for detected_people in result.people.list:
+        # Draw object bounding box
+        r = detected_people.bounding_box
+        bounding_box = ((r.x, r.y), (r.x + r.width, r.y + r.height))
+        draw.rectangle(bounding_box, outline=color, width=3)
+
+        # Return the confidence of the person detected
+        #print(" {} (confidence: {:.2f}%)".format(detected_people.bounding_box, detected_people.confidence * 100))
+
+    # Save annotated image
+    plt.imshow(image)
+    plt.tight_layout(pad=0)
+    outputfile = 'people.jpg'
+    fig.savefig(outputfile)
+    print('  Results saved in', outputfile)
+(Optional) Uncomment the Console.Writeline command under the Return the confidence of the person detected section to review the confidence level returned that a person was detected at a particular position of the image.
+
+Save your changes and run the program once for each of the image files in the images folder, observing any objects that are detected. After each run, view the objects.jpg file that is generated in the same folder as your code file to see the annotated objects.
+
+Note: In the preceding tasks, you used a single method to analyze the image, and then incrementally added code to parse and display the results. The SDK also provides individual methods for suggesting captions, identifying tags, detecting objects, and so on - meaning that you can use the most appropriate method to return only the information you need, reducing the size of the data payload that needs to be returned. See the .NET SDK documentation or Python SDK documentation for more details.
+
+Remove the background or generate a foreground matte of an image
+In some cases, you may need to create remove the background of an image or might want to create a foreground matte of that image. Let's start with the background removal.
+
+In your code file, find the BackgroundForeground function; and under the comment Remove the background from the image or generate a foreground matte, add the following code:
+C#
+
+C#
+// Remove the background from the image or generate a foreground matte
+Console.WriteLine($" Background removal:");
+// Define the API version and mode
+string apiVersion = "2023-02-01-preview";
+string mode = "backgroundRemoval"; // Can be "foregroundMatting" or "backgroundRemoval"
+
+string url = $"computervision/imageanalysis:segment?api-version={apiVersion}&mode={mode}";
+
+// Make the REST call
+using (var client = new HttpClient())
+{
+    var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+    client.BaseAddress = new Uri(endpoint);
+    client.DefaultRequestHeaders.Accept.Add(contentType);
+    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
+
+    var data = new
+    {
+        url = $"https://github.com/MicrosoftLearning/mslearn-ai-vision/blob/main/Labfiles/01-analyze-images/Python/image-analysis/{imageFile}?raw=true"
+    };
+
+    var jsonData = JsonSerializer.Serialize(data);
+    var contentData = new StringContent(jsonData, Encoding.UTF8, contentType);
+    var response = await client.PostAsync(url, contentData);
+
+    if (response.IsSuccessStatusCode) {
+        File.WriteAllBytes("background.png", response.Content.ReadAsByteArrayAsync().Result);
+        Console.WriteLine("  Results saved in background.png\n");
+    }
+    else
+    {
+        Console.WriteLine($"API error: {response.ReasonPhrase} - Check your body url, key, and endpoint.");
+    }
+}
+Python
+
+Python
+# Remove the background from the image or generate a foreground matte
+print('\nRemoving background from image...')
+
+url = "{}computervision/imageanalysis:segment?api-version={}&mode={}".format(endpoint, api_version, mode)
+
+headers= {
+    "Ocp-Apim-Subscription-Key": key, 
+    "Content-Type": "application/json" 
+}
+
+image_url="https://github.com/MicrosoftLearning/mslearn-ai-vision/blob/main/Labfiles/01-analyze-images/Python/image-analysis/{}?raw=true".format(image_file)  
+
+body = {
+    "url": image_url,
+}
+
+response = requests.post(url, headers=headers, json=body)
+
+image=response.content
+with open("background.png", "wb") as file:
+    file.write(image)
+print('  Results saved in background.png \n')
+Save your changes and run the program once for each of the image files in the images folder, opening the background.png file that is generated in the same folder as your code file for each image. Notice how the background has been removed from each of the images.
+Let's now generate a foreground matte for our images.
+
+In your code file, find the BackgroundForeground function; and under the comment Define the API version and mode, change the mode variable to be foregroundMatting.
+
+Save your changes and run the program once for each of the image files in the images folder, opening the background.png file that is generated in the same folder as your code file for each image. Notice how a foreground matte has been generated for your images.
+
+Clean up resources
+If you're not using the Azure resources created in this lab for other training modules, you can delete them to avoid incurring further charges. Here's how:
+
+Open the Azure portal at https://portal.azure.com, and sign in using the Microsoft account associated with your Azure subscription.
+
+In the top search bar, search for Azure AI services multi-service account, and select the Azure AI services multi-service account resource you created in this lab.
+
+On the resource page, select Delete and follow the instructions to delete the resource.
+
+More information
+In this exercise, you explored some of the image analysis and manipulation capabilities of the Azure AI Vision service. The service also includes capabilities for detecting objects and people, and other computer vision tasks.
+
+For more information about using the Azure AI Vision service, see the Azure AI Vision documentation.
+
+Congratulations
+You have successfully completed this lab. Click End to mark the lab as Complete.
+
+
+
+11)Use your own data with Azure OpenAI
+3 Hours Remaining
+Disclaimer Click to show or hide
+Tip: As you follow the instructions in this pane, whenever you see a icon, you can use it to copy text from the instruction pane into the virtual machine interface. This is particularly useful to copy code; but bear in mind you may need to modify the pasted code to fix indent levels or formatting before running it!
+
+Log into Windows as Student account with the password Pa55w.rd.
+
+During the lab exercise, use the following credentials to sign into the Azure subscription that is provided for you:
+
+User name: User1-45200660@cloudslice.onmicrosoft.com
+Password: pSrG5d!9B*
+Create all Azure resources in the ResourceGroup1lod45200660 resource group.
+
+Azure resources such as Virtual Machine names, sizes and locations must match what is specified in these steps. Due to the nature of Cloud Slice, deployments are limited to the scope defined in the instructional steps. If the resources provisioned differ from what is outlined in the instructions, a failure notification will be received, advising this was “disallowed by policy.” If you believe you have received this notification in error, please submit a support request for our team to investigate further.
+
+Implement Retrieval Augmented Generation (RAG) with Azure OpenAI Service
+The Azure OpenAI Service enables you to use your own data with the intelligence of the underlying LLM. You can limit the model to only use your data for pertinent topics, or blend it with results from the pre-trained model.
+
+In the scenario for this exercise, you will perform the role of a software developer working for Margie's Travel Agency. You will explore how use Azure AI Search to index your own data and use it with Azure OpenAI to augment prompts.
+
+This exercise will take approximately 30 minutes.
+
+Provision Azure resources
+To complete this exercise, you'll need:
+
+An Azure OpenAI resource.
+An Azure AI Search resource.
+An Azure Storage Account resource.
+Sign into the Azure portal at https://portal.azure.com.
+
+Create an Azure OpenAI resource with the following settings:
+
+Subscription: Select an Azure subscription that has been approved for access to the Azure OpenAI service
+Resource group: Choose or create a resource group
+Region: Make a random choice from any of the following regions*
+Australia East
+Canada East
+East US
+East US 2
+France Central
+Japan East
+North Central US
+Sweden Central
+Switzerland North
+UK South
+Name: A unique name of your choice
+Pricing tier: Standard S0
+* Azure OpenAI resources are constrained by regional quotas. The listed regions include default quota for the model type(s) used in this exercise. Randomly choosing a region reduces the risk of a single region reaching its quota limit in scenarios where you are sharing a subscription with other users. In the event of a quota limit being reached later in the exercise, there's a possibility you may need to create another resource in a different region.
+
+While the Azure OpenAI resource is being provisioned, create an Azure AI Search resource with the following settings:
+
+Subscription: The subscription in which you provisioned your Azure OpenAI resource
+Resource group: The resource group in which you provisioned your Azure OpenAI resource
+Service name: A unique name of your choice
+Location: The region in which you provisioned your Azure OpenAI resource
+Pricing tier: Basic
+While the Azure AI Search resource is being provisioned, create a Storage account resource with the following settings:
+
+Subscription: The subscription in which you provisioned your Azure OpenAI resource
+Resource group: The resource group in which you provisioned your Azure OpenAI resource
+Storage account name: A unique name of your choice
+Region: The region in which you provisioned your Azure OpenAI resource
+Performance: Standard
+Redundancy: Locally redundant storage (LRS)
+After all three of the resources have been successfully deployed in your Azure subscription, review them in the Azure portal and gather the following information (which you'll need later in the exercise):
+
+The endpoint and a key from the Azure OpenAI resource you created (available on the Keys and Endpoint page for your Azure OpenAI resource in the Azure portal)
+The endpoint for your Azure AI Search service (the Url value on the overview page for your Azure AI Search resource in the Azure portal).
+A primary admin key for your Azure AI Search resource (available in the Keys page for your Azure AI Search resource in the Azure portal).
+Upload your data
+You're going to ground the prompts you use with a generative AI model by using your own data. In this exercise, the data consists of a collection of travel brochures from the fictional Margies Travel company.
+
+In a new browser tab, download an archive of brochure data from https://aka.ms/own-data-brochures. Extract the brochures to a folder on your PC.
+In the Azure portal, navigate to your storage account and view the Storage browser page.
+Select Blob containers and then add a new container named margies-travel.
+Select the margies-travel container, and then upload the .pdf brochures you extracted previously to the root folder of the blob container.
+Deploy AI models
+You're going to use two AI models in this exercise:
+
+A text embedding model to vectorize the text in the brochures so it can be indexed efficiently for use in grounding prompts.
+A GPT model that you application can use to generate responses to prompts that are grounded in your data.
+To deploy these models, you'll use AI Studio.
+
+In the Azure portal, navigate to your Azure OpenAI resource. Then use the link to open your resource in Azure AI Studio..
+
+In Azure AI Studio, on the Deployments page, view your existing model deployments. Then create a new base model deployment of the text-embedding-ada-002 model with the following settings:
+
+Deployment name: text-embedding-ada-002
+Model: text-embedding-ada-002
+Model version: The default version
+Deployment type: Standard
+Tokens per minute rate limit: 5K*
+Content filter: Default
+Enable dynamic quota: Enabled
+After the text embedding model has been deployed, return to the Deployments page and create a new deployment of the gpt-35-turbo-16k model with the following settings:
+
+Deployment name: gpt-35-turbo-16k
+Model: gpt-35-turbo-16k (if the 16k model isn't available, choose gpt-35-turbo)
+Model version: The default version
+Deployment type: Standard
+Tokens per minute rate limit: 5K*
+Content filter: Default
+Enable dynamic quota: Enabled
+* A rate limit of 5,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
+
+Create an index
+To make it easy to use your own data in a prompt, you'll index it using Azure AI Search. You'll use the text embedding mdoel you deployed previously during the indexing process to vectorize the text data (which results in each text token in the index being represented by numeric vectors - making it compatible with the way a generative AI model represents text)
+
+In the Azure portal, navigate to your Azure AI Search resource.
+On the Overview page, select Import and vectorize data.
+In the Setup your data connection page, select Azure Blob Storage and configure the data source with the following settings:
+Subscription: The Azure subscription in which you provisioned your storage account.
+Blob storage account: The storage account you created previously.
+Blob container: margies-travel
+Blob folder: Leave blank
+Enable deletion tracking: Unselected
+Authenticate using managed identity: Unselected
+On the Vectorize your text page, select the following settings:
+Kind: Azure OpenAI
+Subscription: The Azure subscription in which you provisioned your Azure OpenAI service.
+Azure OpenAI Service: Your Azure OpenAI Service resource
+Model deployment: text-embedding-ada-002
+Authentication type: API key
+I acknowledge that connecting to an Azure OpenAI service will incur additional costs to my account: Selected
+On the next page, do not select the option to vectorize images or extract data with AI skills.
+On the next page, enable semantic ranking and schedule the indexer to run once.
+On the final page, set the Objects name prefix to margies-index and then create the index.
+Prepare to develop an app in Visual Studio Code
+Now let's explore the use of your own data in an app that uses the Azure OpenAI service SDK. You'll develop your app using Visual Studio Code. The code files for your app have been provided in a GitHub repo.
+
+Tip: If you have already cloned the mslearn-openai repo, open it in Visual Studio code. Otherwise, follow these steps to clone it to your development environment.
+
+Start Visual Studio Code.
+
+Open the palette (SHIFT+CTRL+P) and run a Git: Clone command to clone the https://github.com/MicrosoftLearning/mslearn-openai repository to a local folder (it doesn't matter which folder).
+
+When the repository has been cloned, open the folder in Visual Studio Code.
+
+Note: If Visual Studio Code shows you a pop-up message to prompt you to trust the code you are opening, click on Yes, I trust the authors option in the pop-up.
+
+Wait while additional files are installed to support the C# code projects in the repo.
+
+Note: If you are prompted to add required assets to build and debug, select Not Now.
+
+Configure your application
+Applications for both C# and Python have been provided, and both apps feature the same functionality. First, you'll complete some key parts of the application to enable using your Azure OpenAI resource.
+
+In Visual Studio Code, in the Explorer pane, browse to the Labfiles/06-use-own-data folder and expand the CSharp or Python folder depending on your language preference. Each folder contains the language-specific files for an app into which you're going to integrate Azure OpenAI functionality.
+
+Right-click the CSharp or Python folder containing your code files and open an integrated terminal. Then install the Azure OpenAI SDK package by running the appropriate command for your language preference:
+
+C#:
+
+dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.14
+Python:
+
+pip install openai==1.13.3
+In the Explorer pane, in the CSharp or Python folder, open the configuration file for your preferred language
+
+C#: appsettings.json
+Python: .env
+Update the configuration values to include:
+
+The endpoint and a key from the Azure OpenAI resource you created (available on the Keys and Endpoint page for your Azure OpenAI resource in the Azure portal)
+The deployment name you specified for your gpt-35-turbo model deployment (available in the Deployments page in Azure AI Studio).
+The endpoint for your search service (the Url value on the overview page for your search resource in the Azure portal).
+A key for your search resource (available in the Keys page for your search resource in the Azure portal - you can use either of the admin keys)
+The name of the search index (which should be margies-index).
+Save the configuration file.
+
+Add code to use the Azure OpenAI service
+Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
+
+In the Explorer pane, in the CSharp or Python folder, open the code file for your preferred language, and replace the comment Configure your data source with code to add the Azure OpenAI SDK library:
+
+C#: ownData.cs
+
+csharp
+// Configure your data source
+AzureSearchChatExtensionConfiguration ownDataConfig = new()
+{
+        SearchEndpoint = new Uri(azureSearchEndpoint),
+        Authentication = new OnYourDataApiKeyAuthenticationOptions(azureSearchKey),
+        IndexName = azureSearchIndex
+};
+Python: ownData.py
+
+python
+# Configure your data source
+extension_config = dict(dataSources = [  
+        { 
+            "type": "AzureCognitiveSearch", 
+            "parameters": { 
+                "endpoint":azure_search_endpoint, 
+                "key": azure_search_key, 
+                "indexName": azure_search_index,
+            }
+        }]
+    )
+Review the rest of the code, noting the use of the extensions in the request body that is used to provide information about the data source settings.
+
+Save the changes to the code file.
+
+Run your application
+Now that your app has been configured, run it to send your request to your model and observe the response. You'll notice the only difference between the different options is the content of the prompt, all other parameters (such as token count and temperature) remain the same for each request.
+
+In the interactive terminal pane, ensure the folder context is the folder for your preferred language. Then enter the following command to run the application.
+
+C#: dotnet run
+Python: python ownData.py
+Tip: You can use the Maximize panel size (^) icon in the terminal toolbar to see more of the console text.
+
+Review the response to the prompt Tell me about London, which should include an answer as well as some details of the data used to ground the prompt, which was obtained from your search service.
+
+Tip: If you want to see the citations from your search index, set the variable show citations near the top of the code file to true.
+
+Clean up
+When you're done with your Azure OpenAI resource, remember to delete the resources in the Azure portal at https://portal.azure.com. Be sure to also include the storage account and search resource, as those can incur a relatively large cost.
+
+Congratulations
+You have successfully completed this lab. Click End to mark the lab as Complete.
+
+
+
+
+
+Extract Data from Forms
+48 Minutes Remaining
+Disclaimer Click to show or hide
+Tip: As you follow the instructions in this pane, whenever you see a icon, you can use it to copy text from the instruction pane into the virtual machine interface. This is particularly useful to copy code; but bear in mind you may need to modify the pasted code to fix indent levels or formatting before running it!
+
+Log into Windows as Student account with the password Pa55w.rd.
+
+During the lab exercise, use the following credentials to sign into the Azure subscription that is provided for you:
+
+User name: User1-45282129@LODSPRODMCA.onmicrosoft.com
+Password: B#1e!hB0Dd
+Create all Azure resources in the ResourceGroup1 resource group.
+
+Azure resources such as Virtual Machine names, sizes and locations must match what is specified in these steps. Due to the nature of Cloud Slice, deployments are limited to the scope defined in the instructional steps. If the resources provisioned differ from what is outlined in the instructions, a failure notification will be received, advising this was “disallowed by policy.” If you believe you have received this notification in error, please submit a support request for our team to investigate further.
+
+Extract Data from Forms
+Suppose a company currently requires employees to manually purchase order sheets and enter the data into a database. They would like you to utilize AI services to improve the data entry process. You decide to build a machine learning model that will read the form and produce structured data that can be used to automatically update a database.
+
+Azure AI Document Intelligence is an Azure AI service that enables users to build automated data processing software. This software can extract text, key/value pairs, and tables from form documents using optical character recognition (OCR). Azure AI Document Intelligence has pre-built models for recognizing invoices, receipts, and business cards. The service also provides the capability to train custom models. In this exercise, we will focus on building custom models.
+
+Prepare to develop an app in Visual Studio Code
+Now let's use the service SDK to develop an app using Visual Studio Code. The code files for your app have been provided in a GitHub repo.
+
+Tip: If you have already cloned the mslearn-ai-document-intelligence repo, open it in Visual Studio code. Otherwise, follow these steps to clone it to your development environment.
+
+Start Visual Studio Code.
+
+Open the palette (SHIFT+CTRL+P) and run a Git: Clone command to clone the https://github.com/MicrosoftLearning/mslearn-ai-document-intelligence repository to a local folder (it doesn't matter which folder).
+
+When the repository has been cloned, open the folder in Visual Studio Code.
+
+Note: If Visual Studio Code shows you a pop-up message to prompt you to trust the code you are opening, click on Yes, I trust the authors option in the pop-up.
+
+Wait while additional files are installed to support the C# code projects in the repo.
+
+Note: If you are prompted to add required assets to build and debug, select Not Now. If you are prompted with the Message Detected an Azure Function Project in folder, you can safely close that message.
+
+Create a Azure AI Document Intelligence resource
+To use the Azure AI Document Intelligence service, you need a Azure AI Document Intelligence or Azure AI Services resource in your Azure subscription. You'll use the Azure portal to create a resource.
+
+In a browser tab, open the Azure portal at https://portal.azure.com, signing in with the Microsoft account associated with your Azure subscription.
+On the Azure portal home page, navigate to the top search box and type Document Intelligence and then press Enter.
+On the Document Intelligence page, select Create.
+On the Create Document Intelligence page, use the following to configure your resource:
+Subscription: Your Azure subscription.
+Resource group: Select or create a resource group with a unique name such as DocIntelligenceResources.
+Region: select a region near you.
+Name: Enter a globally unique name.
+Pricing tier: select Free F0 (if you don't have a Free tier available, select Standard S0).
+Then select Review + create, and Create. Wait while Azure creates the Azure AI Document Intelligence resource.
+When the deployment is complete, select Go to resource to view the resource's Overview page.
+Gather documents for training
+You'll use the sample forms such as this one to train a test a model:
+
+An image of an invoice used in this project.
+
+Return to Visual Studio Code. In the Explorer pane, open the Labfiles/02-custom-document-intelligence folder and expand the sample-forms folder. Notice there are files ending in .json and .jpg in the folder.
+
+You will use the .jpg files to train your model.
+
+The .json files have been generated for you and contain label information. The files will be uploaded into your blob storage container alongside the forms.
+
+You can view the images we are using in the sample-forms folder by selecting them on Visual Studio Code.
+
+Return to the Azure portal and navigate to your resource's Overview page if you're not already there. Under the Essentials section, view the Resource group in which you created the Document Intelligence resource.
+
+On the Overview page for your resource group, note the Subscription ID and Location. You will need these values, along with your resource group name in subsequent steps.
+
+An example of the resource group page.
+
+In Visual Studio Code, in the Explorer pane, browse to the Labfiles/02-custom-document-intelligence folder and expand the CSharp or Python folder depending on your language preference. Each folder contains the language-specific files for an app into which you're you're going to integrate Azure OpenAI functionality.
+
+Right-click the CSharp or Python folder containing your code files and select Open an integrated terminal.
+
+In the terminal, run the following command to login to Azure. The az login command will open the Microsoft Edge browser, login with the same account you used to create the Azure AI Document Intelligence resource. Once you are logged in, close the browser window.
+
+powershell
+az login
+Return to Visual Studio Code. In the terminal pane, run the following command to list the Azure locations.
+
+powershell
+az account list-locations -o table
+In the output, find the Name value that corresponds with the location of your resource group (for example, for East US the corresponding name is eastus).
+
+Important: Record the Name value and use it in Step 11.
+
+In Visual Studio Code, in the Labfiles/02-custom-document-intelligence folder, select setup.cmd. You will use this script to run the Azure command line interface (CLI) commands required to create the other Azure resources you need.
+
+In the setup.cmd script, review the commands. The program will:
+
+Create a storage account in your Azure resource group
+Upload files from your local sampleforms folder to a container called sampleforms in the storage account
+Print a Shared Access Signature URI
+Modify the subscription_id, resource_group, and location variable declarations with the appropriate values for the subscription, resource group, and location name where you deployed the Document Intelligence resource. Then save your changes.
+
+Leave the expiry_date variable as it is for the exercise. This variable is used when generating the Shared Access Signature (SAS) URI. In practice, you will want to set an appropriate expiry date for your SAS. You can learn more about SAS here.
+
+In the terminal for the Labfiles/02-custom-document-intelligence folder, enter the following command to run the script:
+
+PowerShell
+$currentdir=(Get-Item .).FullName
+cd ..
+./setup.cmd
+cd $currentdir
+When the script completes, review the displayed output.
+
+In the Azure portal, refresh your resource group and verify that it contains the Azure Storage account just created. Open the storage account and in the pane on the left, select Storage browser. Then in Storage Browser, expand Blob containers and select the sampleforms container to verify that the files have been uploaded from your local 02-custom-document-intelligence/sample-forms folder.
+
+Train the model using Document Intelligence Studio
+Now you will train the model using the files uploaded to the storage account.
+
+In your browser, navigate to the Document Intelligence Studio at https://documentintelligence.ai.azure.com/studio.
+
+Scroll down to the Custom models section and select the Custom extraction model tile.
+
+If you are asked to sign into your account, use your Azure credentials.
+
+If you are asked which Azure AI Document Intelligence resource to use, select the subscription and resource name you used when you created the Azure AI Document Intelligence resource.
+
+Under My Projects, select Create a project. Use the following configurations:
+
+Project name: Enter a unique name.
+Select Continue.
+Configure service resource: Select the subscription, resource group, and document intelligence resource you created previously in this lab. Check the Set as default box. Keep the default API version.
+Select Continue.
+Connect training data source: Select the subscription, resource group, and storage account that was created by the setup script. Check the Set as default box. Select the sampleforms blob container, and leave the folder path blank.
+Select Continue.
+Select Create project
+Once your project is created, on the top right of the screen, select Train to train your model. Use the following configurations:
+
+Model ID: Provide a globally unique name (you'll need the model ID name in the next step).
+Build Mode: Template.
+Select Go to Models.
+
+Training can take some time. You'll see a notification when it's complete.
+
+Test your custom Document Intelligence model
+Return to Visual Studio Code. In the terminal, install the Document Intelligence package by running the appropriate command for your language preference:
+
+C#:
+
+powershell
+dotnet add package Azure.AI.FormRecognizer --version 4.1.0
+Python:
+
+powershell
+pip install azure-ai-formrecognizer==3.3.3
+In Visual Studio Code, in the Labfiles/02-custom-document-intelligence folder, select the language you are using. Edit the configuration file (appsettings.json or .env, depending on your language preference) with the following values:
+
+Your Document Intelligence endpoint.
+Your Document Intelligence key.
+The Model ID generated you provided when training your model. You can find this on the Models page of the Document Intelligence Studio. Save your changes.
+In Visual Studio Code, open the code file for your client application (Program.cs for C#, test-model.py for Python) and review the code it contains, particularly that the image in the URL refers to the file in this GitHub repo on the web.
+
+Return the terminal, and enter the following command to run the program:
+
+C#
+
+powershell
+dotnet build
+dotnet run
+Python
+s
+powershell
+python test-model.py
+View the output and observe how the output for the model provides field names like Merchant and CompanyPhoneNumber.
+
+Clean up
+If you're done with your Azure resource, remember to delete the resource in the Azure portal to avoid further charges.
+
+More information
+For more information about the Document Intelligence service, see the Document Intelligence documentation.
+
+Congratulations
+You have successfully completed this lab. Click End to mark the lab as Complete.

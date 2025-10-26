@@ -1,0 +1,121 @@
+TEXT_ANALYTICS
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Analytics Integration</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    input, button { padding: 10px; margin-top: 10px; width: 80%; }
+    p { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Text Analytics: Sentiment Analysis</h1>
+
+  <input type="text" id="userInput" placeholder="Enter text to analyze sentiment..." />
+  <button onclick="analyzeSentiment()">Analyze Sentiment</button>
+
+  <p id="sentimentResult">Sentiment result will appear here...</p>
+
+  <script>
+    const textAnalyticsEndpoint = "https://resoucename.cognitiveservices.azure.com/text/analytics/v3.1/sentiment";
+    const textAnalyticsKey = "";
+
+    async function analyzeSentiment() {
+      const text = document.getElementById("userInput").value;
+      if (!text) {
+        alert("Please enter some text!");
+        return;
+      }
+
+      const response = await fetch(textAnalyticsEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Ocp-Apim-Subscription-Key": textAnalyticsKey
+        },
+        body: JSON.stringify({ documents: [{ id: "1", language: "en", text }] })
+      });
+
+      const data = await response.json();
+      const sentiment = data.documents[0].sentiment;
+      document.getElementById("sentimentResult").innerText = "Sentiment: " + sentiment;
+    }
+  </script>
+</body>
+</html>
+
+TEXT_TO_SPEECH AND SPEECH_TO_TEXT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech-to-Text & Text-to-Speech Integration</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    button, input { padding: 10px; margin: 5px; width: 80%; }
+    p { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Speech-to-Text & Text-to-Speech</h1>
+
+ 
+  <button onclick="startListening()">🎤 Speak (Speech-to-Text)</button>
+  <p id="speechText">Transcription will appear here...</p>
+
+ 
+  <input type="text" id="ttsInput" placeholder="Enter text for speech..." />
+  <button onclick="speakText()">🗣 Speak Text</button>
+
+  <script>
+    const speechKey = "sub_key";
+    const speechRegion = "region";
+
+   
+    window.onload = () => {
+      const script = document.createElement("script");
+      script.src = "https://aka.ms/csspeech/jsbrowserpackageraw";
+      document.head.appendChild(script);
+    };
+
+   
+    function startListening() {
+      const sdk = window.SpeechSDK;
+      const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
+      const speechConfig = sdk.SpeechConfig.fromSubscription(speechKey, speechRegion);
+      const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+
+      recognizer.recognizeOnceAsync(result => {
+        document.getElementById("speechText").innerText = "You said: " + result.text;
+      }, err => {
+        console.error("Recognition error:", err);
+      });
+    }
+
+   
+    function speakText() {
+      const text = document.getElementById("ttsInput").value;
+      if (!text) {
+        alert("Please enter text to speak!");
+        return;
+      }
+
+      const sdk = window.SpeechSDK;
+      const audioConfig = sdk.AudioConfig.fromDefaultSpeakerOutput();
+      const speechConfig = sdk.SpeechConfig.fromSubscription(speechKey, speechRegion);
+      const synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
+
+      synthesizer.speakTextAsync(text, result => {
+        console.log("Speech synthesized:", result);
+      }, err => {
+        console.error("Synthesis error:", err);
+      });
+    }
+  </script>
+</body>
+</html>
